@@ -4,8 +4,6 @@ import time
 # ── Constants ──────────────────────────────────────────────────────────────
 SEPARATOR = "-----------------------------------------------"
 CODE_LENGTH = 4
-
-
 # ── Secret number generation ───────────────────────────────────────────────
 def generate_secret() -> str:
     """Generate a random 4-digit number with unique digits, not starting with 0."""
@@ -13,8 +11,6 @@ def generate_secret() -> str:
     while digits[0] == 0:
         random.shuffle(digits)
     return "".join(str(d) for d in digits)
-
-
 # ── Input validation ───────────────────────────────────────────────────────
 def validate_guess(guess: str) -> str | None:
     """
@@ -30,8 +26,6 @@ def validate_guess(guess: str) -> str | None:
     if len(set(guess)) != CODE_LENGTH:
         return "Your number must have unique digits (no repeats)."
     return None
-
-
 # ── Bulls & Cows evaluation ────────────────────────────────────────────────
 def evaluate_guess(secret: str, guess: str) -> tuple[int, int]:
     """
@@ -42,8 +36,6 @@ def evaluate_guess(secret: str, guess: str) -> tuple[int, int]:
     bulls = sum(s == g for s, g in zip(secret, guess))
     cows = sum(g in secret for g in guess) - bulls
     return bulls, cows
-
-
 # ── Formatting helpers ─────────────────────────────────────────────────────
 def plural(count: int, word: str) -> str:
     """Return 'count word' or 'count words' depending on count."""
@@ -51,13 +43,9 @@ def plural(count: int, word: str) -> str:
         return f"{count} {word}"
     suffix = "es" if word.endswith(("s", "sh", "ch", "x", "z")) else "s"
     return f"{count} {word}{suffix}"
-
-
 def format_result(bulls: int, cows: int) -> str:
     """Format the bulls/cows result line."""
     return f"{plural(bulls, 'bull')}, {plural(cows, 'cow')}"
-
-
 def format_duration(seconds: float) -> str:
     """Convert seconds to a human-readable mm:ss string."""
     minutes = int(seconds) // 60
@@ -65,13 +53,9 @@ def format_duration(seconds: float) -> str:
     if minutes:
         return f"{minutes} min {secs} sec"
     return f"{secs} sec"
-
-
 # ── UI helpers ─────────────────────────────────────────────────────────────
 def print_separator() -> None:
     print(SEPARATOR)
-
-
 def print_intro() -> None:
     """Print the welcome banner."""
     print("\nHi there!")
@@ -79,8 +63,6 @@ def print_intro() -> None:
     print("I've generated a random 4 digit number for you.")
     print("Let's play a bulls and cows game.")
     print_separator()
-
-
 # ── Single game loop ───────────────────────────────────────────────────────
 def play_game() -> int:
     """
@@ -117,17 +99,12 @@ def play_game() -> int:
             print("That's amazing!")
             print_separator()
             return guesses
-
         print(format_result(bulls, cows))
         print_separator()
-
-
 # ── Statistics ─────────────────────────────────────────────────────────────
 def update_stats(stats: list[int], guesses: int) -> list[int]:
     """Append the latest guess count and return updated stats list."""
     return stats + [guesses]
-
-
 def print_stats(stats: list[int]) -> None:
     """Print a summary of all played games."""
     if not stats:
@@ -136,14 +113,11 @@ def print_stats(stats: list[int]) -> None:
     print(f"Best game    : {min(stats)} guess(es)")
     print(f"Average      : {sum(stats) / len(stats):.1f} guess(es)")
     print_separator()
-
-
 # ── Main entry point ───────────────────────────────────────────────────────
 def main() -> None:
     """Main loop — keep playing until the user quits."""
     print_intro()
     stats: list[int] = []
-
     while True:
         guesses = play_game()
         stats = update_stats(stats, guesses)
@@ -156,7 +130,5 @@ def main() -> None:
             print_separator()
             break
         print_intro()
-
-
 if __name__ == "__main__":
     main()
